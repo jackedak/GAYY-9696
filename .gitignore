@@ -1,0 +1,5 @@
+SECRETS.py
+build/
+*.so
+*.c
+*.db

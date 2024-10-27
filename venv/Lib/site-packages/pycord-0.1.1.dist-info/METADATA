@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: pycord
+Version: 0.1.1
+Summary: Convenient wrapper on top of FFmpeg
+Author-email: Alessio Sanfratello <sanfra90@gmail.com>
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+Classifier: License :: OSI Approved :: MIT License
+Requires-Dist: ffmpeg-python>=0.2.0
+Requires-Dist: imageio-ffmpeg>=0.4.2
+Requires-Dist: numpy
+Requires-Dist: pytest ; extra == "dev"
+Requires-Dist: pytest-cov ; extra == "dev"
+Project-URL: Home, https://github.com/alesanfra/pycord
+Provides-Extra: dev
+
+[![PyPI version](https://badge.fury.io/py/pycord.svg)](https://badge.fury.io/py/pycord)
+
+# Pycord - A tiny python wrapper on top of FFMpeg
+
+**Pycord** is a simple python wrapper on top of ffmpeg 
+designed to load videos into numpy ndarrays quickly and easily.
+
+You can use **Pycord** in place of more complex video loader as [OpenCV](https://pypi.org/project/opencv-python/) 
+or [Decord](https://pypi.org/project/decord/) in your Computer Vision or Machine Learning projects.
+
+## Example
+```python
+from pycord.video_reader import VideoReader
+
+vr = VideoReader("video.mp4")
+
+b = vr.get_batch([5, 8])
+```
+
+## Documentation
+There's no documentation at the moment, take a look to the tests to find some examples of use.
+
+## Contributing
+The main idea of this project is to provide a decord-like interface 
+completely written in python (hance the name **pycord**, a **py**thon implementation of de**cord**).
+
+Any contribution is welcome as long as it is implemented in pure python.
+
+## I'm looking for something faster...
+
+If you think **pycord** is slow, and you don't mind to deal directly with come low-level code, 
+take a look to my other project [iterframes](https://github.com/alesanfra/iterframes)!
+It's a python module implemented in [Rust](https://www.rust-lang.org) with the aim to be as fast as possible.
