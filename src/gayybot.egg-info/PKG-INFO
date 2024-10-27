@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: gayybot
+Version: 0.6.9
+Summary: An incredibly gay discord bot made for the r/foundfelt389 discord server
+Author-email: Jack Baldyga <jackedak@gmail.com>
+Project-URL: Homepage, https://github.com/pypa/sampleproject
+Project-URL: Issues, https://github.com/pypa/sampleproject/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE

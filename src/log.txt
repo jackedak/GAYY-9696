@@ -1,0 +1,6 @@
+2024-10-27 11:56 WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+2024-10-27 14:00 WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+2024-10-27 14:02 WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+2024-10-27 14:04 WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+2024-10-27 14:50 WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+2024-10-27 14:54 WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported

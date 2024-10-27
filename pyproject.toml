@@ -1,0 +1,18 @@
+[project]
+name = "gayybot"
+version = "0.6.9"
+authors = [
+  { name="Jack Baldyga", email="jackedak@gmail.com" },
+]
+description = "An incredibly gay discord bot made for the r/foundfelt389 discord server"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/pypa/sampleproject"
+Issues = "https://github.com/pypa/sampleproject/issues"

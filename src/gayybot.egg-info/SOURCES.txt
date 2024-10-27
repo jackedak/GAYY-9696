@@ -1,0 +1,11 @@
+LICENSE
+pyproject.toml
+src/__init__.py
+src/__main__.py
+src/config.py
+src/main.py
+src/setup.py
+src/gayybot.egg-info/PKG-INFO
+src/gayybot.egg-info/SOURCES.txt
+src/gayybot.egg-info/dependency_links.txt
+src/gayybot.egg-info/top_level.txt
