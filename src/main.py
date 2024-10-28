@@ -29,6 +29,8 @@ client = discord.Client(activity=activity, intents=intents)
 conn = sqlite3.connect('store.db')
 cursor = conn.cursor()
 bot = commands.Bot(intents=intents, command_prefix='!')
+words = set(json.load(open("words.json",'r'))["words"])
+
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS disabled
              (id unsigned big int, time real)''')
@@ -48,7 +50,8 @@ async def on_message(message):
         for msg, func in bonkles.items():
             if msg in message.content:
                 await func(message, message)
-                break
+                return
+        print(message.content)
     if message.content == '!enable':
         cursor.execute(f'''DELETE FROM disabled WHERE id = {message.author.id}''')
         conn.commit()
@@ -57,6 +60,9 @@ async def on_message(message):
     cursor.execute(f"SELECT * FROM disabled WHERE id = {message.author.id}")
     if cursor.fetchall():
         return
+    for word in ''.join(filter(lambda x: x.isalpha() or x.isspace(),message.content.lower())).split():
+        words.add(word)
+    json.dump({"words":list(words)}, open("words.json", 'w'))
     if random.randint(1, 200) == 1:
         await message.channel.send(f"I love <@1297510410689187843>")
     if message.content == '!disable':
@@ -64,7 +70,7 @@ async def on_message(message):
         conn.commit()
         await message.channel.send("Disabled bot for your user. To re-enable, please run !enable", reference=message)
         return
-    if random.randint(1, 800) == 1:
+    if random.randint(1, 200) == 1:
         await message.channel.send(f"<@{random.choice(message.guild.members).id}> is awesome", mention_author=False)
     didex = False
     for regex, func in responses.items():
@@ -83,5 +89,8 @@ async def on_message(message):
         ]))
 def main():
     client.run(token)
-if __name__ == '__main__':
-    main()
+try:
+    if __name__ == '__main__':
+        main()
+except:
+    json.dump({"words":list(words)}, open("words.json", 'w'))

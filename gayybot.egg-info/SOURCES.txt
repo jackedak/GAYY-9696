@@ -1,0 +1,14 @@
+LICENSE
+pyproject.toml
+setup.py
+gayybot.egg-info/PKG-INFO
+gayybot.egg-info/SOURCES.txt
+gayybot.egg-info/dependency_links.txt
+gayybot.egg-info/entry_points.txt
+gayybot.egg-info/requires.txt
+gayybot.egg-info/top_level.txt
+src/__init__.py
+src/__main__.py
+src/config.py
+src/main.py
+src/sentience.py
