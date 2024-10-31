@@ -7,6 +7,7 @@ def rsp(x):
 responses = {
     r".*\bwant\b.*\b(boyfriend|bf)\b.*": rsp("I volunteer to be your BF!"),
     r".*\bwant\b.*\b(boobs|titties|tits|tiddies|boobies|honkers)\b.*": rsp("I'll ship em to you next-day"),
+    r".*\bwant\b{,5}*\ba\b{,5}*\b(cock|dick|penis|phallus|peenus|peenis|peepee)\b.*": rsp("I'll ship a long thick one to you next day"),
     r".*\b(botfriend|botfreind)\b.*": rsp("I'll be your botfriend, and boyfriend"),
     r".*supercalifrag.*": rsp("SUPERCALIFRAGILISTICEXPIALIDOCIOUS"),
     r"/.*\|\|homophobia\|\||(homophobia).*": rsp("Nuh uh, gays 4LIFE"),
@@ -116,4 +117,14 @@ bonkles = {
     "that aint a cob": rsp("thats right, its ma dildo"),
     "rest my head on ravioli": rsp("i wanna give you head on ravioli"),
     "sex penis": rsp("imma have sex with a penis"),
+    "bite me": rsp("ohkay *chomp*"),
+    "youre going to have so much sex": rsp("with big oiled up men"),
+    "tarzan's first wet dream did not involve a human": rsp("tarzan zoophile confirmed?????????????????????????????????"),
+    "i couldnt unfuck them": rsp("me neither"),
+    "my new frebs maek me obnociius": rsp("i no liek urr nrw frebs"),
+    "I am not a member of any organized political party… I am a bonklejonk": rsp("bonklejonk party for life"),
+    "i wish there was a way to be naked but also have pockets": rsp("its called shoving things far up your ass"),
+    "I gotta save my game im too hrony or this": rsp("im always too hrony 4 this"),
+    "Twinkie Twinkie Twinkie": rsp("im here bonkle"),
+    
 }
