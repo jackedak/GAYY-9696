@@ -86,7 +86,7 @@ bonkles = {
     "thats my relationship with bisexuality": rsp("i tried bisexuality, but then i realised that girls have cooties"),
     "d you wana gt high": rsp("on HRT"),
     "Eyeshade": rsp("ballshade"),
-    "cough cough my wife cough cough": rsp("cough cough m*y husband cough cough"),
+    "cough cough my wife cough cough": rsp("cough cough my husband cough cough"),
     "Mess up my hair do srigs and have seggs": rsp("allll**right**"),
     "i will brainwash you into singing this song": rsp("non kinky enough, try again"),
     "i will take you away": rsp("thank you bonkol"),
@@ -115,4 +115,5 @@ bonkles = {
     "BOOBS ARE FOR THE WEAK I AM TRUE STREANGTH": rsp("suck tiddies"),
     "that aint a cob": rsp("thats right, its ma dildo"),
     "rest my head on ravioli": rsp("i wanna give you head on ravioli"),
+    "sex penis": rsp("imma have sex with a penis"),
 }

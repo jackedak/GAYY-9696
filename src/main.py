@@ -29,11 +29,13 @@ client = discord.Client(activity=activity, intents=intents)
 conn = sqlite3.connect('store.db')
 cursor = conn.cursor()
 bot = commands.Bot(intents=intents, command_prefix='!')
-words = set(json.load(open("words.json",'r'))["words"])
 
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS disabled
              (id unsigned big int, time real)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS dc
+             (id unsigned big int, time real)''')
+
 
 
 @client.event
@@ -44,6 +46,18 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.author == client.user:
+        return
+    if message.content == '!enablechannel':
+        if message.channel.permissions_for(message.author).manage_channels or message.author.id == 561328826123026453:
+            cursor.execute(f'''DELETE FROM dc WHERE id = {message.channel.id}''')
+            conn.commit()
+            await message.channel.send("Enabled bot in channel. To re-disable, please run !disablechannel", reference=message)
+            return
+        else:
+            await message.channel.send("You do not have manage channel permission, and you are not <@561328826123026453>, so no.", reference=message)
+            return
+    cursor.execute(f"SELECT * FROM dc WHERE id = {message.channel.id}")
+    if cursor.fetchall():
         return
     if message.author.id == 935189080378056724:
         # ITS BONKLE
@@ -60,15 +74,24 @@ async def on_message(message):
     cursor.execute(f"SELECT * FROM disabled WHERE id = {message.author.id}")
     if cursor.fetchall():
         return
-    for word in ''.join(filter(lambda x: x.isalpha() or x.isspace(),message.content.lower())).split():
-        words.add(word)
-    json.dump({"words":list(words)}, open("words.json", 'w'))
     if random.randint(1, 200) == 1:
         await message.channel.send(f"I love <@1297510410689187843>")
     if message.content == '!disable':
         cursor.execute(f'''INSERT INTO disabled VALUES ({message.author.id}, {time.time()})''')
         conn.commit()
         await message.channel.send("Disabled bot for your user. To re-enable, please run !enable", reference=message)
+        return
+    if message.content == '!disablechannel':
+        if message.channel.permissions_for(message.author).manage_channels or message.author.id == 561328826123026453:
+            cursor.execute(f'''INSERT INTO dc VALUES ({message.channel.id}, {time.time()})''')
+            conn.commit()
+            await message.channel.send("Disabled bot in channel, to re-enable, please run !enablechannel", reference=message)
+            return
+        else:
+            await message.channel.send("You do not have manage channel permission, and you are not <@561328826123026453>, so no.", reference=message)
+            return
+    if message.content.startswith('!gayysay '):
+        await message.channel.send(f"{message.content[9:]}", reference=message)
         return
     if random.randint(1, 200) == 1:
         await message.channel.send(f"<@{random.choice(message.guild.members).id}> is awesome", mention_author=False)
@@ -86,6 +109,9 @@ async def on_message(message):
             'heyy gay',
             'hello homo',
             'homo hello',
+            'wassup',
+            'wazzup'
+            'big poopoo'
         ]))
 def main():
     client.run(token)
