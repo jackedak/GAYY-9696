@@ -1,7 +1,8 @@
 import tensorflow as tf
 import json
 
-data = json.load(open('words.json', 'r'))
+
+data = json.load(open("words.json", 'r'))
 words = data["words"]
 
 def create_model():
