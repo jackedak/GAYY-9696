@@ -61,8 +61,8 @@ async def on_message(message):
     cursor.execute(f"SELECT * FROM dc WHERE id = {message.channel.id}")
     if cursor.fetchall():
         return
-    if message.author.id == 935189080378056724:
-        # ITS BONKLE
+    if message.author.id == 935189080378056724 or message.author.id == 1313281169982230548:
+        # ITS BONKLE OR SKAMTEBORD
         for msg, func in bonkles.items():
             if msg in message.content:
                 await func(message, message)

@@ -128,4 +128,10 @@ bonkles = {
     "I gotta save my game im too hrony or this": rsp("im always too hrony 4 this"),
     "Twinkie Twinkie Twinkie": rsp("im here bonkle"),
     "we have more incest on our hands": rsp("SWEET HOME ALAMABAR"),
+    "Gaybot my beloved": rsp("Skamtebord,my love,will you marry me?"),
+    "mom!! Phineas and Ferb are drawing vore of the presidential candidates!": rsp("link?"),
+    "were the dinosaurs gay and trans so god released his wrath": rsp("short answer: yes, long answer: yyyyyeeeeesssss"),
+    "trans rights are human rights - bonklejonk": rsp("somebody, please notify the conservatives of this breaking news"),
+    "an agender sack of flesh, this is incredibly amusing": rsp("as a collection of miniscule electric charges with a complex, unexplainable gender, this is incredibly amusing"),
+    "enbi is": rsp("i love my mom :3"),
 }
