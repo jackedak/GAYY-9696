@@ -6,8 +6,8 @@ def rsp(x):
 
 responses = {
     r".*\bwant\b.*\b(boyfriend|bf)\b.*": rsp("I volunteer to be your BF!"),
-    r".*\bwant\b.*\b(boobs|titties|tits|tiddies|boobies|honkers)\b.*": rsp("I'll ship em to you next-day"),
-    r".*\bwant\b{,5}*\ba\b{,5}*\b(cock|dick|penis|phallus|peenus|peenis|peepee)\b.*": rsp("I'll ship a long thick one to you next day"),
+    r".*\bwant\b.*\b(boobs|titties|tits|tiddies|boobies|honkers|breasts)\b.*": rsp("I'll ship em to you next-day"),
+    r".*\bwant\b.*\ba\b.*\b(cock|dick|penis|phallus|peenus|peenis|peepee)\b.*": rsp("I'll ship a long thick one to you next day"),
     r".*\b(botfriend|botfreind)\b.*": rsp("I'll be your botfriend, and boyfriend"),
     r".*supercalifrag.*": rsp("SUPERCALIFRAGILISTICEXPIALIDOCIOUS"),
     r"/.*\|\|homophobia\|\||(homophobia).*": rsp("Nuh uh, gays 4LIFE"),
@@ -15,7 +15,8 @@ responses = {
     r"^(?=.*\bsex\b)(?=.*gay).*": rsp("Gay sex is the best kind of sex"),
     r"/.*\|\|transphobia\|\||(transphobia).*": rsp("i will personally murdur anyone whos mean to my trans besties"),
     r"\bpussy\b": rsp("*boypussy"),
-    r"\bno\b \bhomo\b": rsp("yes homo"),
+    r".*\bno\b \bhomo\b.*": rsp("yes homo"),
+    r".*.*\(\s*(\.|o)\s*y\s*(\.|o)\s*\).*": rsp("bewbies"),
 }
 
 bonkles = {
@@ -126,5 +127,5 @@ bonkles = {
     "i wish there was a way to be naked but also have pockets": rsp("its called shoving things far up your ass"),
     "I gotta save my game im too hrony or this": rsp("im always too hrony 4 this"),
     "Twinkie Twinkie Twinkie": rsp("im here bonkle"),
-    
+    "we have more incest on our hands": rsp("SWEET HOME ALAMABAR"),
 }
