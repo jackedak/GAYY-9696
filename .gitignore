@@ -5,3 +5,5 @@ build/
 *.db
 *temp*
 log.txt
+dist/
+*.egg-info/
