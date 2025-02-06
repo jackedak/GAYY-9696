@@ -8,6 +8,7 @@ from config import responses, bonkles
 import sqlite3
 import random
 import os
+import requests
 from PIL import Image, ImageDraw, ImageFont
 
 token = os.environ['gayytoken']
@@ -30,6 +31,7 @@ activity = discord.Activity(name='Men getting oiled up.', type=discord.ActivityT
 client = discord.Bot(activity=activity, intents=intents)
 conn = sqlite3.connect('store.db')
 cursor = conn.cursor()
+predict = client.create_group("predict", "Predict if someone might be a pretty little fruitcake :3")
 lng = 0
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS disabled
@@ -146,7 +148,7 @@ async def on_message(message):
                 "Evelyn is a gworl",
                 "Homophobicus deletus",
                 "Ender has bender her gender",
-                "Robo will perform mitosister",
+                "Tina will perform mitosister",
                 "Habik will cause unbelievable, massive amounts of havoc",
             ]))
     didex = False
@@ -156,6 +158,9 @@ async def on_message(message):
             didex = True
             break
     if client.user.mentioned_in(message) and not didex and not message.reference:
+        if message.author.id == 936030536021999637:
+            await message.channel.send("You are such an egg.", reference=message)
+            return
         msg = await message.channel.send(random.choice([
             'Heyyyyy bestie! Whatya want? <3',
             'Im here!',
@@ -186,11 +191,11 @@ async def on_reaction_add(reaction, user):
 
 @client.command(description="Forge a license :3")
 async def license(ctx, 
-                flag: discord.Option(str, "What pride flag?",choices=["Gay", "Lesbian", "Rainbow", "Progress", "Bi", "Pan"]), 
+                flag: discord.Option(str, "What pride flag?",choices=["Gay", "Lesbian", "Rainbow", "Progress", "Bi", "Pan", "Arizona", "Trans"]), 
                 pronouns: discord.Option(str, "What are your pronouns?")
                 ):
     global font
-    assert flag in ["Gay", "Lesbian", "Rainbow", "Progress", "Bi", "Pan"]
+    assert flag in ["Gay", "Lesbian", "Rainbow", "Progress", "Bi", "Pan", "Arizona", "Trans"]
     base = Image.open("base.png")
     flagimg = Image.open(f"{flag}.png")
     base.paste(flagimg, (0,0), flagimg)
@@ -201,6 +206,20 @@ async def license(ctx,
     with open("temp.png", "rb") as f:
         image = discord.File(f)
         await ctx.respond(file=image)
+
+@predict.command(description="Predict whether or not someone is totally an egg or not :3")
+async def egg(ctx, user: discord.Option(discord.SlashCommandOptionType.user , "What user?")):
+    rng = random.randint(1,100)
+    if user.id == 936030536021999637:
+        rng += 100
+    if random.randint(1,10) == 1:
+        rng+=user.id
+    embed = discord.Embed(
+        title=f"{rng}%",
+        description=f"<@{user.id}> is {rng}% an egg.",
+        color=discord.Colour.blurple(),
+    )
+    await ctx.respond("", embed=embed)
     
 def main():
     client.run(token)
