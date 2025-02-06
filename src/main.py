@@ -213,7 +213,7 @@ async def egg(ctx, user: discord.Option(discord.SlashCommandOptionType.user , "W
     if user.id == 936030536021999637:
         rng += 100
     if random.randint(1,10) == 1:
-        rng+=user.id
+        rng*=user.id
     embed = discord.Embed(
         title=f"{rng}%",
         description=f"<@{user.id}> is {rng}% an egg.",

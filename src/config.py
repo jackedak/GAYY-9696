@@ -17,6 +17,7 @@ responses = {
     r"\bpussy\b": rsp("*boypussy"),
     r".*\bno\b \bhomo\b.*": rsp("yes homo"),
     r".*.*\(\s*(\.|o)\s*y\s*(\.|o)\s*\).*": rsp("bewbies"),
+    r".*\bcoming\b.*\bout\b.*": rsp("coming out is awesome.")
 }
 
 bonkles = {
@@ -134,4 +135,5 @@ bonkles = {
     "trans rights are human rights - bonklejonk": rsp("somebody, please notify the conservatives of this breaking news"),
     "an agender sack of flesh, this is incredibly amusing": rsp("as a collection of miniscule electric charges with a complex, unexplainable gender, this is incredibly amusing"),
     "enbi is": rsp("i love my mom :3"),
+    "if my family were to have incest relationships": rsp("reallllll :3"),
 }
