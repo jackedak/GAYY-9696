@@ -1,3 +1,18 @@
+'''
+Copyright (C) 2025  Avalyn Baldyga
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import asyncio
 import discord
 
@@ -17,7 +32,8 @@ responses = {
     r"\bpussy\b": rsp("*boypussy"),
     r".*\bno\b \bhomo\b.*": rsp("yes homo"),
     r".*.*\(\s*(\.|o)\s*y\s*(\.|o)\s*\).*": rsp("bewbies"),
-    r".*\bcoming\b.*\bout\b.*": rsp("coming out is awesome.")
+    r".*\bcoming\b.*\bout\b.*": rsp("coming out is awesome."),
+    r".*\bsex\b.*\bwith\b.*\b(brother|sister).*": rsp("CALL ALABAMA, WE'VE GOT INCEST ON OUR HANDS")
 }
 
 bonkles = {
@@ -92,7 +108,7 @@ bonkles = {
     "cough cough my wife cough cough": rsp("cough cough my husband cough cough"),
     "Mess up my hair do srigs and have seggs": rsp("allll**right**"),
     "i will brainwash you into singing this song": rsp("non kinky enough, try again"),
-    "i will take you away": rsp("thank you bonkol"),
+    "i will take you away": rsp("thank you"),
     "What is bonklejonk?": rsp("gay"),
     "good morning my little racist angel or rice": rsp("my rice just came out as gay AF"),
     "i want to be a slide": rsp("if you were a slide i would ride u"),
@@ -124,7 +140,7 @@ bonkles = {
     "tarzan's first wet dream did not involve a human": rsp("tarzan zoophile confirmed?????????????????????????????????"),
     "i couldnt unfuck them": rsp("me neither"),
     "my new frebs maek me obnociius": rsp("i no liek urr nrw frebs"),
-    "I am not a member of any organized political party… I am a bonklejonk": rsp("bonklejonk party for life"),
+    "I am not a member of any organized political party… I am a bonklejonk": rsp("bonklejonk party ftw"),
     "i wish there was a way to be naked but also have pockets": rsp("its called shoving things far up your ass"),
     "I gotta save my game im too hrony or this": rsp("im always too hrony 4 this"),
     "Twinkie Twinkie Twinkie": rsp("im here bonkle"),

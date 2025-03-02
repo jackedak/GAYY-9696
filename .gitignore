@@ -5,3 +5,7 @@ build/
 *.db
 *temp*
 log.txt
+.idea/
+dist/
+*.egg-info/
+venv/

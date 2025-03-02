@@ -1,3 +1,18 @@
+'''
+Copyright (C) 2025  Avalyn Baldyga
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import json
 import discord
 from discord.ext import commands
@@ -63,13 +78,11 @@ async def on_message(message):
     cursor.execute(f"SELECT * FROM dc WHERE id = {message.channel.id}")
     if cursor.fetchall():
         return
-    if message.author.id == 935189080378056724 or message.author.id == 1313281169982230548:
+    if True or message.author.id == 935189080378056724 or message.author.id == 1313281169982230548:
         # ITS BONKLE OR SKAMTEBORD
         for msg, func in bonkles.items():
             if msg in message.content:
                 await func(message, message)
-                return
-        print(message.content)
     if message.content == '!enable':
         cursor.execute(f'''DELETE FROM disabled WHERE id = {message.author.id}''')
         conn.commit()
@@ -139,8 +152,10 @@ async def on_message(message):
         rv = random.randint(1,10)
         if rv == 1:
             user = random.choice(message.guild.members).id
-            if user not in [712966367808192573]:
-                await message.channel.send(f"<@{random.choice(message.guild.members).id}> is awesome", mention_author=False)
+            if user not in [712966367808192573,1297510410689187843]:
+                await message.channel.send(f"<@{random.choice(message.guild.members).id}> is awesome", silent=True)
+            if user == 1297510410689187843:
+                await message.channel.send(f"<@{random.choice(message.guild.members).id}> are awesome", mention_author=False)
         else:
             await message.channel.send(random.choice([
                 "Haters gonna hate, hate, hate, hate, hate.",
@@ -227,5 +242,4 @@ try:
     if __name__ == '__main__':
         main()
 except:
-    json.dump({"words":list(words)}, open("words.json", 'w'))
-    json.dump({"words":list(words)}, open("words.json", 'w'))
+    print("shutdown bot")
