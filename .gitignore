@@ -5,6 +5,7 @@ build/
 *.db
 *temp*
 log.txt
+<<<<<<< HEAD
 .idea/
 dist/
 *.egg-info/
