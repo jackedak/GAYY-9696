@@ -24,7 +24,6 @@ import config
 import sqlite3
 import random
 import os
-import requests
 from PIL import Image, ImageDraw, ImageFont
 import atexit
 
