@@ -188,6 +188,9 @@ async def on_message(message):
         if 'print' in condition:
             await message.channel.send("Condition may not contain 'print' for security reasons.", reference=message)
             return
+        if 'getattr' in condition:
+            await message.channel.send("Condition may not contain 'getattr' for security reasons.", reference=message)
+            return
 
         cursor.execute(f'''INSERT INTO notifications VALUES ((?), (?), (?), (?))''', (name, message.author.id, time.time(), condition))
         conn.commit()
