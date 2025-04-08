@@ -151,11 +151,14 @@ async def on_message(message):
         name = message.content.split(' ')[1]
         condition = ' '.join(message.content[8:].split(' ')[1:])
         if name == "delete":
-            cursor.execute(f'''DELETE FROM notifications WHERE userid = (?) AND name = (?)''', (message.author.id, condition))
+            if condition == '*':
+                cursor.execute(f'''DELETE FROM notifications WHERE userid = (?)''', (message.author.id,))
+            else:
+                cursor.execute(f'''DELETE FROM notifications WHERE userid = (?) AND name = (?)''', (message.author.id, condition))
             conn.commit()
             return
         if not condition:
-            await message.channel.send("""Command syntax: ```!notify [name] [condition]```to add a notification. [condition] must be a valid python expression, where "content" is the text of the message, "sender" is the user ID of the message author, "server" is the ID of the server where the message was send, "channel" is the ID of the channel where the message was sent, "notifname" is the previously entered name of this notification, and authorusername is the username of the message author. The python RegEx library is available under "re". To delete this notification, do !notify delete [name].""", reference=message
+            await message.channel.send("""Command syntax: ```!notify [name] [condition]```to add a notification. [condition] must be a valid python expression, where "content" is the text of the message, "sender" is the user ID of the message author, "server" is the ID of the server where the message was send, "channel" is the ID of the channel where the message was sent, "notifname" is the previously entered name of this notification, and authorusername is the username of the message author. The python RegEx library is available under "re". To delete this notification, do !notify delete [name]. To delete all notifications, do !notify delete *""", reference=message
             )
             return
         for word in config.banned_words:
