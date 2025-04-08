@@ -25,6 +25,7 @@ import random
 import os
 import requests
 from PIL import Image, ImageDraw, ImageFont
+import atexit
 
 token = os.environ['gayytoken']
 font = ImageFont.truetype('font.ttf', 20)
@@ -40,6 +41,8 @@ logging.basicConfig(
 logging.debug("Started bot")
 
 all_sent = []
+data = json.load(open('words.json', 'r'))
+words = data["words"]
 intents = discord.Intents.all()
 intents.message_content = True
 activity = discord.Activity(name='Men getting oiled up.', type=discord.ActivityType.watching)
@@ -49,12 +52,22 @@ cursor = conn.cursor()
 predict = client.create_group("predict", "Predict if someone might be a pretty little fruitcake :3")
 lng = 0
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS disabled
-             (id unsigned big int, time real)''')
-cursor.execute('''CREATE TABLE IF NOT EXISTS dc
-             (id unsigned big int, time real)''')
-cursor.execute('''CREATE TABLE IF NOT EXISTS config
-             (key varchar(12), val bigint, server unsigned big int)''')             
+cursor.execute('''
+            CREATE TABLE IF NOT EXISTS disabled
+            (id unsigned big int, time real)
+''')
+cursor.execute('''
+            CREATE TABLE IF NOT EXISTS dc
+            (id unsigned big int, time real)
+''')
+cursor.execute('''
+            CREATE TABLE IF NOT EXISTS config
+            (key varchar(12) NOT NULL, val bigint, server unsigned big int NOT NULL)
+''') 
+cursor.execute('''
+            CREATE TABLE IF NOT EXISTS notifications 
+            (name varchar(16) NOT NULL UNIQUE, userid unsigned big int NOT NULL, time real, condition varchar(64) NOT NULL)
+''')
 
 
 @client.event
@@ -66,6 +79,8 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
+    if not message.guild.id in [1305760193191346186, 1290860835266363452, 1299171183463235604]:
+        print(f"{message.guild.name} {message.content}: {message.author.id} {message.author.display_name}")
     if message.content == '!enablechannel':
         if message.channel.permissions_for(message.author).manage_channels or message.author.id == 561328826123026453:
             cursor.execute(f'''DELETE FROM dc WHERE id = {message.channel.id}''')
@@ -91,6 +106,24 @@ async def on_message(message):
     cursor.execute(f"SELECT * FROM disabled WHERE id = {message.author.id}")
     if cursor.fetchall():
         return
+    result = cursor.execute(f"SELECT * FROM notifications WHERE userid = {message.author.id}")
+    for (name, userid, ctime, condition) in result.fetchall():
+        try:
+            if (eval(condition, {
+                "content": message.content,
+                "sender": message.author.id,
+                "server": message.guild.id,
+                "channel": message.channel.id,
+                "time": time.time(),
+                "notifname": name,
+                "authorusername": message.author.name,
+                "re": re
+            }, {})):
+                await client.get_user(userid).send(f"Your notification, ```{name}```, triggered! [Jump to message]({message.jump_url})")
+        except Exception as e:
+            await client.get_user(userid).send(f"Your notification, ```{name}```, failed with exception {e} and has been automatically deleted")
+            cursor.execute(f'''DELETE FROM notifications WHERE userid = (?) AND name = (?)''', (userid, name))
+    conn.commit()
     if random.randint(1, 200) == 1:
         await message.channel.send(f"I love <@1297510410689187843>")
     if message.content == '!disable':
@@ -109,7 +142,56 @@ async def on_message(message):
             return
     if message.content.startswith('!gayysay '):
         await message.channel.send(f"{message.content[9:]}", reference=message)
+        try:
+            await message.delete()
+        except:
+            pass
         return
+    if message.content.startswith('!notify '):
+        name = message.content.split(' ')[1]
+        condition = ' '.join(message.content[8:].split(' ')[1:])
+        if name == "delete":
+            cursor.execute(f'''DELETE FROM notifications WHERE userid = (?) AND name = (?)''', (message.author.id, condition))
+            conn.commit()
+            return
+        if not condition:
+            await message.channel.send("""Command syntax: ```!notify [name] [condition]```to add a notification. [condition] must be a valid python expression, where "content" is the text of the message, "sender" is the user ID of the message author, "server" is the ID of the server where the message was send, "channel" is the ID of the channel where the message was sent, "notifname" is the previously entered name of this notification, and authorusername is the username of the message author. The python RegEx library is available under "re". To delete this notification, do !notify delete [name].""", reference=message
+            )
+            return
+        if 'exec' in condition:
+            await message.channel.send("Condition may not contain 'exec' for security reasons.", reference=message)
+            return
+        if 'eval' in condition:
+            await message.channel.send("Condition may not contain 'eval' for security reasons.", reference=message)
+            return
+        if 'import' in condition:
+            await message.channel.send("Condition may not contain 'import' for security reasons.", reference=message)
+            return
+        if 'open' in condition:
+            await message.channel.send("Condition may not contain 'open' for security reasons.", reference=message)
+            return
+        if 'compile' in condition:
+            await message.channel.send("Condition may not contain 'compile' for security reasons.", reference=message)
+            return
+        if 'help' in condition:
+            await message.channel.send("Condition may not contain 'help' for security reasons.", reference=message)
+            return
+        if 'globals' in condition:
+            await message.channel.send("Condition may not contain 'globals' for security reasons.", reference=message)
+            return
+        if 'return' in condition:
+            await message.channel.send("Condition may not contain 'return' for security reasons.", reference=message)
+            return
+        if 'while' in condition:
+            await message.channel.send("Condition may not contain 'while' for security reasons.", reference=message)
+            return
+        if 'print' in condition:
+            await message.channel.send("Condition may not contain 'print' for security reasons.", reference=message)
+            return
+
+        cursor.execute(f'''INSERT INTO notifications VALUES ((?), (?), (?), (?))''', (name, message.author.id, time.time(), condition))
+        conn.commit()
+        await message.channel.send("Notification successfully created.", reference=message)
     if message.content.startswith('!config.'):
         if message.author.id == 860599288034623509:
             return
@@ -172,6 +254,12 @@ async def on_message(message):
             await func(message, None)
             didex = True
             break
+    wordss = message.content.lower()
+    wordss = filter(lambda x: x.isalpha() or x.isspace(), wordss)
+    wordss = ''.join(wordss).split()
+    for word in wordss:
+        if not word in words:
+            words.append(word)
     if client.user.mentioned_in(message) and not didex and not message.reference:
         if message.author.id == 936030536021999637:
             await message.channel.send("You are such an egg.", reference=message)
@@ -190,6 +278,7 @@ async def on_message(message):
         
 @client.event
 async def on_reaction_add(reaction, user):
+    json.dump({"words": words}, open('words.json', 'w'))
     try:
         global lng
         cursor.execute(f"SELECT * FROM config WHERE key = 'nostarself' AND server = '{reaction.message.guild.id}'")
@@ -235,11 +324,14 @@ async def egg(ctx, user: discord.Option(discord.SlashCommandOptionType.user , "W
         color=discord.Colour.blurple(),
     )
     await ctx.respond("", embed=embed)
-    
-def main():
-    client.run(token)
+
+def grace():
+    json.dump({"words": words}, open('words.json', 'w'))
+    print("shutdown bot")
+atexit.register(grace)
 try:
     if __name__ == '__main__':
-        main()
+        client.run(token)
 except:
+    json.dump({"words": words}, open('words.json', 'w'))
     print("shutdown bot")

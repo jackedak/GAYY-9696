@@ -21,7 +21,7 @@ words = data["words"]
 
 def create_model():
     model = tf.keras.Sequential([
-        tf.keras.layers.Embedding(len(words), 64, input_length=15),
+        tf.keras.layers.Embedding(len(words), 64),
         tf.keras.layers.Dropout(0.2),
         tf.keras.layers.Conv1D(64, 5, activation='relu'),
         tf.keras.layers.MaxPooling1D(pool_size=4),
@@ -36,9 +36,12 @@ model = create_model()
 print(model.summary())
 print(f"Vocab size: {len(words)}")
 
-def tokenize(message):
+def tokenize(message) -> list[int]:
     message = message.lower()
     message = filter(lambda x: x.isalpha() or x.isspace(), message)
     message = ''.join(message).split()
-    message = [words.index(x) for x in message]
+    message = [words.index(x)+1 for x in message]
     return message
+
+def train(interactions: list[tuple[str,str]]):
+    interactions = [ tokenize(x) + 6969 + tokenize(y) for x,y in interactions ]

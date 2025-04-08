@@ -33,7 +33,8 @@ responses = {
     r".*\bno\b \bhomo\b.*": rsp("yes homo"),
     r".*.*\(\s*(\.|o)\s*y\s*(\.|o)\s*\).*": rsp("bewbies"),
     r".*\bcoming\b.*\bout\b.*": rsp("coming out is awesome."),
-    r".*\bsex\b.*\bwith\b.*\b(brother|sister).*": rsp("CALL ALABAMA, WE'VE GOT INCEST ON OUR HANDS")
+    r".*\bsex\b.*\bwith\b.*\b(brother|sister).*": rsp("CALL ALABAMA, WE'VE GOT INCEST ON OUR HANDS"),
+    r".*j.va.*": rsp("EWWWWWWW JAVA"),
 }
 
 bonkles = {
