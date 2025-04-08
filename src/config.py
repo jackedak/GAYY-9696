@@ -151,6 +151,8 @@ bonkles = {
     "were the dinosaurs gay and trans so god released his wrath": rsp("short answer: yes, long answer: yyyyyeeeeesssss"),
     "trans rights are human rights - bonklejonk": rsp("somebody, please notify the conservatives of this breaking news"),
     "an agender sack of flesh, this is incredibly amusing": rsp("as a collection of miniscule electric charges with a complex, unexplainable gender, this is incredibly amusing"),
-    "enbi is": rsp("i love my mom :3"),
+    "ava is": rsp("i love my mom :3"),
     "if my family were to have incest relationships": rsp("reallllll :3"),
 }
+
+banned_words = ["exec", "eval", "import", "open", "compile", "help", "globals", "return", "while", "print", "getattr"]

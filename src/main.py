@@ -20,6 +20,7 @@ import logging
 import re
 import time
 from config import responses, bonkles
+import config
 import sqlite3
 import random
 import os
@@ -158,40 +159,10 @@ async def on_message(message):
             await message.channel.send("""Command syntax: ```!notify [name] [condition]```to add a notification. [condition] must be a valid python expression, where "content" is the text of the message, "sender" is the user ID of the message author, "server" is the ID of the server where the message was send, "channel" is the ID of the channel where the message was sent, "notifname" is the previously entered name of this notification, and authorusername is the username of the message author. The python RegEx library is available under "re". To delete this notification, do !notify delete [name].""", reference=message
             )
             return
-        if 'exec' in condition:
-            await message.channel.send("Condition may not contain 'exec' for security reasons.", reference=message)
-            return
-        if 'eval' in condition:
-            await message.channel.send("Condition may not contain 'eval' for security reasons.", reference=message)
-            return
-        if 'import' in condition:
-            await message.channel.send("Condition may not contain 'import' for security reasons.", reference=message)
-            return
-        if 'open' in condition:
-            await message.channel.send("Condition may not contain 'open' for security reasons.", reference=message)
-            return
-        if 'compile' in condition:
-            await message.channel.send("Condition may not contain 'compile' for security reasons.", reference=message)
-            return
-        if 'help' in condition:
-            await message.channel.send("Condition may not contain 'help' for security reasons.", reference=message)
-            return
-        if 'globals' in condition:
-            await message.channel.send("Condition may not contain 'globals' for security reasons.", reference=message)
-            return
-        if 'return' in condition:
-            await message.channel.send("Condition may not contain 'return' for security reasons.", reference=message)
-            return
-        if 'while' in condition:
-            await message.channel.send("Condition may not contain 'while' for security reasons.", reference=message)
-            return
-        if 'print' in condition:
-            await message.channel.send("Condition may not contain 'print' for security reasons.", reference=message)
-            return
-        if 'getattr' in condition:
-            await message.channel.send("Condition may not contain 'getattr' for security reasons.", reference=message)
-            return
-
+        for word in config.banned_words:
+            if word in condition:
+                await message.channel.send(f"Condition may not contain '{word}' for security reasons.", reference=message)
+                return
         cursor.execute(f'''INSERT INTO notifications VALUES ((?), (?), (?), (?))''', (name, message.author.id, time.time(), condition))
         conn.commit()
         await message.channel.send("Notification successfully created.", reference=message)
