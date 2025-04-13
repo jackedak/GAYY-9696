@@ -26,6 +26,8 @@ import random
 import os
 from PIL import Image, ImageDraw, ImageFont
 import atexit
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import sentience
 
 token = os.environ['gayytoken']
 font = ImageFont.truetype('font.ttf', 20)
@@ -50,7 +52,14 @@ client = discord.Bot(activity=activity, intents=intents)
 conn = sqlite3.connect('store.db')
 cursor = conn.cursor()
 predict = client.create_group("predict", "Predict if someone might be a pretty little fruitcake :3")
+try:
+    model = sentience.tf.keras.models.load_model('model.keras')
+except:
+    model = sentience.create_model()
+    print("Could not load model.")
+print(model.summary())
 lng = 0
+lastsave = time.time()
 
 cursor.execute('''
             CREATE TABLE IF NOT EXISTS disabled
@@ -68,7 +77,14 @@ cursor.execute('''
             CREATE TABLE IF NOT EXISTS notifications 
             (name varchar(16) NOT NULL UNIQUE, userid unsigned big int NOT NULL, time real, condition varchar(64) NOT NULL)
 ''')
-
+cursor.execute('''
+            CREATE TABLE IF NOT EXISTS noai
+            (userid unsigned big int NOT NULL UNIQUE)
+''')
+cursor.execute('''
+            CREATE TABLE IF NOT EXISTS falling
+            (userid unsigned big int NOT NULL UNIQUE)
+''')
 
 @client.event
 async def on_ready():
@@ -77,6 +93,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    global lastsave
     if message.author == client.user:
         return
     if not message.guild.id in [1305760193191346186, 1290860835266363452, 1299171183463235604]:
@@ -93,11 +110,6 @@ async def on_message(message):
     cursor.execute(f"SELECT * FROM dc WHERE id = {message.channel.id}")
     if cursor.fetchall():
         return
-    if True or message.author.id == 935189080378056724 or message.author.id == 1313281169982230548:
-        # ITS BONKLE OR SKAMTEBORD
-        for msg, func in bonkles.items():
-            if msg in message.content:
-                await func(message, message)
     if message.content == '!enable':
         cursor.execute(f'''DELETE FROM disabled WHERE id = {message.author.id}''')
         conn.commit()
@@ -106,6 +118,7 @@ async def on_message(message):
     cursor.execute(f"SELECT * FROM disabled WHERE id = {message.author.id}")
     if cursor.fetchall():
         return
+
     result = cursor.execute(f"SELECT * FROM notifications WHERE userid = {message.author.id}")
     for (name, userid, ctime, condition) in result.fetchall():
         try:
@@ -131,6 +144,52 @@ async def on_message(message):
         conn.commit()
         await message.channel.send("Disabled bot for your user. To re-enable, please run !enable", reference=message)
         return
+    if message.content == '!noai':
+        cursor.execute(f'''INSERT INTO noai VALUES ({message.author.id})''')
+        conn.commit()
+        await message.channel.send("Disabled AI training from your messages. To re-enable, please run !yesai", reference=message)
+        return
+    if message.content == '!yesai':
+        cursor.execute(f'''DELETE FROM noai WHERE userid = {message.author.id}''')
+        conn.commit()
+        await message.channel.send("Enabled AI training from your messages. To re-disable, please run !noai", reference=message)
+        return
+    if message.content == '!norsp':
+        cursor.execute(f'''INSERT INTO falling VALUES ({message.author.id})''')
+        conn.commit()
+        await message.channel.send("Disabled responses to your messages. To re-enable, please run !respond", reference=message)
+        return
+    if message.content == '!respond':
+        cursor.execute(f'''DELETE FROM falling WHERE userid = {message.author.id}''')
+        conn.commit()
+        await message.channel.send("Enabled responses to your messages. To re-disable, please run !norsp", reference=message)
+        return
+
+    cursor.execute(f"SELECT * FROM falling WHERE userid = {message.author.id}")
+    srsp = not cursor.fetchall()
+    if srsp:
+        # ITS BONKLE OR SKAMTEBORD
+        for msg, func in bonkles.items():
+            if msg in message.content:
+                await func(message, message)
+
+
+    cursor.execute(f"SELECT * FROM noai WHERE userid = {message.author.id}")
+    if not cursor.fetchall():
+        messageref = message.reference
+        if messageref:
+            try:
+                sentience.train(model, messageref.resolved.content, message.content)
+            except:
+                pass
+    if random.randint(1,40) == 5 and srsp:
+        prediction = sentience.predict(model, message.content)
+        print(prediction)
+        await message.channel.send(prediction, reference=message)
+    if time.time() - lastsave > 60:
+        model.save('model.keras')
+        lastsave = time.time()
+
     if message.content == '!disablechannel':
         if message.channel.permissions_for(message.author).manage_channels or message.author.id == 561328826123026453:
             cursor.execute(f'''INSERT INTO dc VALUES ({message.channel.id}, {time.time()})''')
@@ -141,12 +200,13 @@ async def on_message(message):
             await message.channel.send("You do not have manage channel permission, and you are not <@561328826123026453>, so no.", reference=message)
             return
     if message.content.startswith('!gayysay '):
-        await message.channel.send(f"{message.content[9:]}", reference=message)
+        await message.channel.send(f"{message.content[9:]}")
         try:
             await message.delete()
         except:
             pass
         return
+
     if message.content.startswith('!notify '):
         name = message.content.split(' ')[1]
         condition = ' '.join(message.content[8:].split(' ')[1:])
@@ -168,6 +228,7 @@ async def on_message(message):
         cursor.execute(f'''INSERT INTO notifications VALUES ((?), (?), (?), (?))''', (name, message.author.id, time.time(), condition))
         conn.commit()
         await message.channel.send("Notification successfully created.", reference=message)
+
     if message.content.startswith('!config.'):
         if message.author.id == 860599288034623509:
             return
@@ -206,7 +267,8 @@ async def on_message(message):
             conn.commit()
             await message.channel.send(f"Set {key} to {value}", reference=message)
             return
-    if random.randint(1, 50) == 1:
+
+    if random.randint(1, 50) == 1 and srsp:
         rv = random.randint(1,10)
         if rv == 1:
             user = random.choice(message.guild.members).id
@@ -224,6 +286,7 @@ async def on_message(message):
                 "Tina will perform mitosister",
                 "Habik will cause unbelievable, massive amounts of havoc",
             ]))
+
     didex = False
     for regex, func in responses.items():
         if re.match(regex, message.content.lower()):
@@ -233,24 +296,26 @@ async def on_message(message):
     wordss = message.content.lower()
     wordss = filter(lambda x: x.isalpha() or x.isspace(), wordss)
     wordss = ''.join(wordss).split()
-    for word in wordss:
-        if not word in words:
-            words.append(word)
+    #for word in wordss:
+    #    if not word in words:
+    #        words.append(word)
+    #sentience.words = words
     if client.user.mentioned_in(message) and not didex and not message.reference:
         if message.author.id == 936030536021999637:
             await message.channel.send("You are such an egg.", reference=message)
             return
-        msg = await message.channel.send(random.choice([
-            'Heyyyyy bestie! Whatya want? <3',
-            'Im here!',
-            'what does your gay ass want',
-            'heyy gay',
-            'hello homo',
-            'homo hello',
-            'wassup',
-            'wazzup'
-            'big poopoo'
-        ]))
+        if srsp:
+            msg = await message.channel.send(random.choice([
+                'Heyyyyy bestie! Whatya want? <3',
+                'Im here!',
+                'what does your gay ass want',
+                'heyy gay',
+                'hello homo',
+                'homo hello',
+                'wassup',
+                'wazzup'
+                'big poopoo'
+            ]))
         
 @client.event
 async def on_reaction_add(reaction, user):
@@ -310,4 +375,5 @@ try:
         client.run(token)
 except:
     json.dump({"words": words}, open('words.json', 'w'))
+    model.save('model.keras')
     print("shutdown bot")

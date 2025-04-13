@@ -25,7 +25,7 @@ responses = {
     r".*\bwant\b.*\ba\b.*\b(cock|dick|penis|phallus|peenus|peenis|peepee)\b.*": rsp("I'll ship a long thick one to you next day"),
     r".*\b(botfriend|botfreind)\b.*": rsp("I'll be your botfriend, and boyfriend"),
     r".*supercalifrag.*": rsp("SUPERCALIFRAGILISTICEXPIALIDOCIOUS"),
-    r"/.*\|\|homophobia\|\||(homophobia).*": rsp("Nuh uh, gays 4LIFE"),
+    r"/.*\|\|homophobia\|\||(homophobia).*": rsp("gays 4LIFE"),
     r"^(?=.*<@.*>)(?=.*i love).*": rsp("CHAT IS THIS WHOLESOME"),
     r"^(?=.*\bsex\b)(?=.*gay).*": rsp("Gay sex is the best kind of sex"),
     r"/.*\|\|transphobia\|\||(transphobia).*": rsp("i will personally murdur anyone whos mean to my trans besties"),
@@ -156,3 +156,7 @@ bonkles = {
 }
 
 banned_words = ["exec", "eval", "import", "open", "compile", "help", "globals", "return", "while", "print", "getattr"]
+
+bad_words = ["faggot", "retard", "nigg", "suicide", "kys", "negro"]
+
+maxlen = 256
